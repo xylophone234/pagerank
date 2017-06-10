@@ -20,10 +20,13 @@ def pagerank(fn_chuck,size,max_iter=300,eps=1e-10):
     error = np.abs(x1-x2).mean()
     chunk_fn_list=[line.rstrip() for line in open(fn_chuck)]
     while n_iter<max_iter and error > eps:
+	# print '%s iter of %s max_iter' % (n_iter,max_iter)
         for fn in chunk_fn_list:
             chunk_start,chunk_end = fn.split('.')[0].split('_')[-2:]
             chunk_start,chunk_end = int(chunk_start),int(chunk_end )
             x2[chunk_start:chunk_end]=np.dot(np.load(fn),x1)
         error = np.abs(x1-x2).mean()
-        x1,x2 = x2,x1
+        x1,x2 = x2,x1	
+	print 'iter: %s   error: %s' % (n_iter,error) 
+	n_iter +=1
     return x2,error
